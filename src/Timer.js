@@ -16,12 +16,6 @@ const Timer = () => {
     }
   }
 
-  const resetTimer = () => {
-    timerDispatch({
-      type: TimerAction.RESET
-    });
-  }
-
   const styleObj = {
     color: (totalSeconds <= 45) ? 'orange' : 'black'
   }
@@ -29,25 +23,22 @@ const Timer = () => {
   if (totalSeconds <= 15) {
     styleObj.color = 'red';
   }
-
-  let startButtonTitle = 'Start Timer';
-  if (timer.state === TimerState.RUNNING) {
-    startButtonTitle = 'Pause Timer'
-  }
   
   return (
-    <div style={styleObj}>
-      <p>
+    <div>
+      <p style={styleObj}>
         <span>{minutes}</span> : <span>{seconds}</span>
       </p>
       <input 
         type='button' 
-        onClick={(e) => startPause(TimerAction.START)} 
-        value={startButtonTitle}
+        onClick={() => startPause(TimerAction.START)} 
+        value={timer.state === TimerState.RUNNING ? 'Pause Timer' : 'Start Timer'}
       />
       <input 
         type='button' 
-        onClick={(e) => resetTimer()} 
+        onClick={() => timerDispatch({
+          type: TimerAction.RESET
+        })} 
         value='Reset Timer'
       />
     </div>

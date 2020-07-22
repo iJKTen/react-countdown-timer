@@ -14,3 +14,4 @@ TimerState has all the possible states the timer can be in, for example: idle, r
 ## To Do
 1. Clean up the if condition logic in useEffect
 2. 'TICK' is hardcoded as a dispatch action... find a place for it.
+3. Clicking on Reset while the timmer is running does not reset the timer to it's original state.
