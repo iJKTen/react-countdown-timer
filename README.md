@@ -7,9 +7,9 @@ I have a custom hook called Timer.js with which you can start a countdown timer 
 
 It gives you the ability to start, pause, and reset the countdown timer.
 
-TimerAction is used to manage the timer, for example, start, pause, and reset the timer.
+TimerAction is used to manage the timer, for example: start, pause, and reset the timer.
 
-TimerState has all the possible states the timer can be in, for example, idle, running, paused, and end.
+TimerState has all the possible states the timer can be in, for example: idle, running, paused, and end.
 
 ## To Do
 1. Clean up the if condition logic in useEffect
