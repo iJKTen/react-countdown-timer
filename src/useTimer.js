@@ -2,11 +2,11 @@ import {useEffect, useReducer} from 'react';
 
 const formatNumber = (number) => number < 10 ? `0${number}` : number;
 
-const secondsToTime = (timer) => {
+const secondsToTime = (seconds) => {
   return {
-    totalSeconds: timer,
-    minutes: formatNumber(Math.floor(timer / 60)),
-    seconds: formatNumber(timer % 60)
+    totalSeconds: seconds,
+    minutes: formatNumber(Math.floor(seconds / 60)),
+    seconds: formatNumber(seconds % 60)
   };
 }
 
@@ -19,7 +19,6 @@ export const TimerAction = Object.freeze({
 export const TimerState = Object.freeze({
   'IDLE': 'IDLE',
   'RUNNING': 'RUNNING',
-  'RESET': 'RESET',
   'PAUSED': 'PAUSED',
   'END': 'END'
 });
