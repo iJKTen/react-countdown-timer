@@ -1,4 +1,4 @@
-import {useState, useEffect, useReducer} from 'react';
+import {useEffect, useReducer} from 'react';
 
 const formatNumber = (number) => number < 10 ? `0${number}` : number;
 
@@ -20,6 +20,7 @@ export const TimerState = Object.freeze({
   'IDLE': 'IDLE',
   'RUNNING': 'RUNNING',
   'RESET': 'RESET',
+  'PAUSED': 'PAUSED',
   'END': 'END'
 });
 
@@ -45,6 +46,7 @@ const timerReducer = (state, action) => {
     case TimerAction.RESET: {
       return {
         ...state,
+        countdown: secondsToTime(state.timerStartedWith),
         state: TimerState.IDLE
       }
     }
@@ -52,6 +54,12 @@ const timerReducer = (state, action) => {
       return {
         ...state,
         state: action.type
+      }
+    }
+    case 'TICK': {
+      return {
+        ...state,
+        countdown: secondsToTime(action.payload)
       }
     }
     default: {
@@ -62,28 +70,34 @@ const timerReducer = (state, action) => {
 
 const useTimer = (durationInSeconds) => {
   const [timer, dispatch] = useReducer(timerReducer, {
-    state: TimerState.IDLE
+    state: TimerState.IDLE,
+    timerStartedWith: durationInSeconds,
+    countdown: secondsToTime(durationInSeconds)
   });
-  const initialState = secondsToTime(durationInSeconds);
-  const [countdown, setCountdown] = useState(initialState);
 
   useEffect(() => {
-    if (countdown.totalSeconds === 0 || 
-        timer.state === TimerState.IDLE || 
-        timer.state === TimerState.PAUSED) {
+    if (timer.countdown.totalSeconds === 0 || 
+    timer.state === TimerState.IDLE || 
+    timer.state === TimerState.PAUSED || 
+    timer.state === TimerState.END) {
+      dispatch({
+        type: TimerState.END
+      });
       return;
     }
+
     setTimeout(function(){
-      setCountdown((current) => {
-        return secondsToTime(current.totalSeconds - 1)
-      })
+      dispatch({
+        type: 'TICK', 
+        payload: timer.countdown.totalSeconds - 1
+      });
     }, 1000);
-  }, [timer, countdown.totalSeconds]);
+  }, [timer.countdown.totalSeconds, timer.state]);
 
   return {
-    totalSeconds: countdown.totalSeconds,
-    minutes: countdown.minutes,
-    seconds: countdown.seconds,
+    totalSeconds: timer.countdown.totalSeconds,
+    minutes: timer.countdown.minutes,
+    seconds: timer.countdown.seconds,
     timerDispatch: dispatch,
     timer: timer
   }

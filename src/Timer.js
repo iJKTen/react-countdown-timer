@@ -37,7 +37,9 @@ const Timer = () => {
   
   return (
     <div style={styleObj}>
-      <span>{minutes}</span> : <span>{seconds}</span><br/>
+      <p>
+        <span>{minutes}</span> : <span>{seconds}</span>
+      </p>
       <input 
         type='button' 
         onClick={(e) => startPause(TimerAction.START)} 
